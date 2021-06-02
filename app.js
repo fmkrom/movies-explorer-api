@@ -7,16 +7,16 @@ const { errors } = require('celebrate');
 const cors = require('cors');
 
 const usersRoutes = require('./routes/users');
-const cardsRoutes = require('./routes/cards');
+const moviesRoutes = require('./routes/movies');
 const notFoundRoutes = require('./routes/notFound');
 
 const { auth } = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const {
-  createUser,
-  login,
-} = require('./controllers/users');
+  signUp,
+  signIn,
+} = require('./controllers/auth');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -27,7 +27,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect('mongodb://localhost:27017/mestodb',
+mongoose.connect('mongodb://localhost:27017/filmsdb',
   {
     useUnifiedTopology: true,
     useNewUrlParser: true,
@@ -43,27 +43,27 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.use('/signin',
-  celebrate({
-    body: Joi.object().keys({
-      email: Joi.string().required().min(2).max(30),
-      password: Joi.string().required().min(8),
-    }),
-  }), login);
-
+// Регистрация:
 app.use('/signup',
   celebrate({
     body: Joi.object().keys({
+      email: Joi.string().required().min(2).max(30).email({ tlds: { allow: false } }),
+      password: Joi.string().required().min(8),
       name: Joi.string().min(2).max(30),
-      about: Joi.string().min(2).max(30),
-      avatar: Joi.string(),
-      email: Joi.string().required().min(2).max(30),
+    }),
+  }), signUp);
+
+  // Авторизация (логин)
+  app.use('/signin',
+  celebrate({
+    body: Joi.object().keys({
+      email: Joi.string().required().min(2).max(30).email({ tlds: { allow: false } }),
       password: Joi.string().required().min(8),
     }),
-  }), createUser);
+  }), signIn);
 
 app.use('/users', auth, usersRoutes);
-app.use('/cards', auth, cardsRoutes);
+app.use('/movies', auth, moviesRoutes);
 app.use('*', notFoundRoutes);
 
 app.use(errorLogger);
