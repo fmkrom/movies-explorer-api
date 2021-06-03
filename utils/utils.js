@@ -12,4 +12,9 @@ function handleErr(err) {
   }
 }
 
-module.exports = { handleErr };
+function processErrors(err, req, res, next) {
+  res.status(err.statusCode)
+    .send({ message: err.message });
+}
+
+module.exports = { handleErr, processErrors };

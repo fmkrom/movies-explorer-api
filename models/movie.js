@@ -24,27 +24,27 @@ const movieSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-      required: true,
-      validate: {
-        validator: (value) => validator.isURL(value, { protocols: ['http', 'https', 'ftp'], require_tld: true, require_protocol: true }),
-        message: 'Неправильный формат ссылки',
-      },
+    required: true,
+    validate: {
+      validator: (value) => validator.isURL(value, { protocols: ['http', 'https', 'ftp'], require_tld: true, require_protocol: true }),
+      message: 'Неправильный формат ссылки',
+    },
   },
   trailer: {
     type: String,
-      required: true,
-      validate: {
-        validator: (value) => validator.isURL(value, { protocols: ['http', 'https', 'ftp'], require_tld: true, require_protocol: true }),
-        message: 'Неправильный формат ссылки',
-      },
+    required: true,
+    validate: {
+      validator: (value) => validator.isURL(value, { protocols: ['http', 'https', 'ftp'], require_tld: true, require_protocol: true }),
+      message: 'Неправильный формат ссылки',
+    },
   },
   thumbnail: {
     type: String,
-      required: true,
-      validate: {
-        validator: (value) => validator.isURL(value, { protocols: ['http', 'https', 'ftp'], require_tld: true, require_protocol: true }),
-        message: 'Неправильный формат ссылки',
-      },
+    required: true,
+    validate: {
+      validator: (value) => validator.isURL(value, { protocols: ['http', 'https', 'ftp'], require_tld: true, require_protocol: true }),
+      message: 'Неправильный формат ссылки',
+    },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
@@ -57,8 +57,8 @@ const movieSchema = new mongoose.Schema({
   },
   nameEN: {
     type: String,
-    required: true,  
-  }
+    required: true,
+  },
 });
 
 module.exports = mongoose.model('movie', movieSchema);

@@ -22,7 +22,7 @@ function signUp(req, res, next) {
     }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new BadRequestError(`Переданы некорректные данные: ${err.message}`);
+        throw new BadRequestError('Переданы некорректные данные');
       } else if (err.code === 11000) {
         throw new ConflictError('Пользователь с такими данными уже зарегистрирован');
       } else if (err.name === 'NotFound') {
@@ -31,7 +31,7 @@ function signUp(req, res, next) {
         throw new InternalServerError('Ошибка на сервере при получении данных пользователей');
       }
     })
-  .catch(next);
+    .catch(next);
 }
 
 function signIn(req, res, next) {
@@ -41,14 +41,13 @@ function signIn(req, res, next) {
       res.send(token);
     })
     .catch((err) => {
-      console.log(err);
       if (err.statusCode === 500) {
         throw new InternalServerError('Ошибка на сервере при авторизации пользователя');
       } else {
-        throw new UnauthorizedError('Необходима авторизация');
+        throw new UnauthorizedError('Неверный логин или пароль');
       }
     })
-  .catch(next);
+    .catch(next);
 }
 
 module.exports = {

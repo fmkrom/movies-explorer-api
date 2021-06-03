@@ -7,7 +7,7 @@ function auth(req, res, next) {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    throw new UnauthorizedError(`Пользователю необходима авторизация: ${req.headers}. Результат: ${res}`);
+    throw new UnauthorizedError('Необходима авторизация пользователя');
   }
   const token = authorization.replace('Bearer ', '');
 

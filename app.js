@@ -13,6 +13,15 @@ const notFoundRoutes = require('./routes/notFound');
 const { auth } = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
+const { processErrors } = require('./utils/utils');
+
+const { mongooseSettings } = require('./utils/constants');
+
+const {
+  signUpValidation,
+  signInValidation,
+} = require('./utils/validation');
+
 const {
   signUp,
   signIn,
@@ -27,13 +36,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect('mongodb://localhost:27017/filmsdb',
-  {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  });
+mongoose.connect('mongodb://localhost:27017/filmsdb', mongooseSettings);
 
 app.use(requestLogger);
 
@@ -45,22 +48,13 @@ app.get('/crash-test', () => {
 
 // Регистрация:
 app.use('/signup',
-  celebrate({
-    body: Joi.object().keys({
-      email: Joi.string().required().min(2).max(30).email({ tlds: { allow: false } }),
-      password: Joi.string().required().min(8),
-      name: Joi.string().min(2).max(30),
-    }),
-  }), signUp);
+  celebrate({ body: signUpValidation }),
+  signUp);
 
-  // Авторизация (логин)
-  app.use('/signin',
-  celebrate({
-    body: Joi.object().keys({
-      email: Joi.string().required().min(2).max(30).email({ tlds: { allow: false } }),
-      password: Joi.string().required().min(8),
-    }),
-  }), signIn);
+// Авторизация (логин)
+app.use('/signin',
+  celebrate({ body: signInValidation }),
+  signIn);
 
 app.use('/users', auth, usersRoutes);
 app.use('/movies', auth, moviesRoutes);
@@ -70,9 +64,7 @@ app.use(errorLogger);
 
 app.use(errors());
 
-app.use((err, req, res, next) => {
-  res.status(err.statusCode).send({ message: err.message });
-});
+app.use(processErrors);
 
 app.listen(PORT, () => {
   console.log(`Server launched sucesfully! App listening on port: ${PORT}`);
