@@ -7,10 +7,13 @@
 Бэкенд для проекта **Movies Explorer**. Используемые технологии: **Node.js, Express.js, MongoDB**.
 
 ## Бэкенд проекта:
+https://api.fmkrom-movies-exp.nomoredomains.icu
 
+## Фронтэнд проекта:
+https://fmkrom-movies-explorer.nomoredomains.icu
 
 ## Адрес сервера:
-
+https://84.201.141.14/
 
 ### Серверные функции, реализованные в проекте:
 
