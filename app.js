@@ -10,6 +10,7 @@ const cookieParser = require('cookie-parser');
 const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
 const cors = require('cors');
+const helmet = require('helmet');
 
 const usersRoutes = require('./routes/users');
 const moviesRoutes = require('./routes/movies');
@@ -35,6 +36,7 @@ const {
 const app = express();
 
 app.use(cors());
+app.use(helmet());
 
 app.use(cookieParser());
 app.use(bodyParser.json());
