@@ -1,10 +1,12 @@
+const mongoose = require('mongoose');
 const Movie = require('../models/movie');
-const { handleErr } = require('../utils/utils');
 
 const { BadRequestError } = require('../errors/400-BadRequestError');
 const { NotFoundError } = require('../errors/404-NotFoundError');
 const { InternalServerError } = require('../errors/500-InternalServerError');
 const { ForbiddenError } = require('../errors/403-ForbiddenError');
+
+const { errorMessage } = require('../utils/constants');
 
 async function getMovies(req, res) {
   try {
@@ -12,12 +14,13 @@ async function getMovies(req, res) {
     res.send(movies);
     return;
   } catch (err) {
-    throw new InternalServerError(`Ошибка на сервере: ${err}`);
+    throw new InternalServerError(errorMessage.internalServerError);
   }
 }
 
 function createMovie(req, res, next) {
   Movie.create({
+    movieId: mongoose.Types.Number(),
     country: req.body.country,
     director: req.body.director,
     duration: req.body.duration,
@@ -33,9 +36,9 @@ function createMovie(req, res, next) {
     .then((movie) => { res.send(movie); })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new BadRequestError('Переданы некорректные данные для создания фильма');
+        throw new BadRequestError(errorMessage.badRequest);
       } else {
-        throw new InternalServerError('Ошибка на сервере');
+        throw new InternalServerError(errorMessage.internalServerError);
       }
     })
     .catch(next);
@@ -44,9 +47,9 @@ function createMovie(req, res, next) {
 function deleteMovie(req, res, next) {
   Movie.findById(req.params.movieId)
     .then((movie) => {
-      const movieIsOwn = Boolean(movie.owner == req.user._id);
+      const movieIsOwn = Boolean(movie.owner.toString() === req.user._id.toString());
       if (!movieIsOwn) {
-        throw new ForbiddenError('У пользователя нет прав на удаление фильма');
+        throw new ForbiddenError(errorMessage.forbidden);
       } else if (movieIsOwn) {
         Movie.findByIdAndRemove(movie._id)
           .then((deletedMovie) => res.send({ deletedMovie }));
@@ -54,11 +57,11 @@ function deleteMovie(req, res, next) {
     })
     .catch((err) => {
       if (err.name === 'CastError' || err.name === 'ValidationError') {
-        throw new BadRequestError('Переданы некорректные данные');
+        throw new BadRequestError(errorMessage.badRequest);
       } else if (err.name === 'TypeError') {
-        throw new NotFoundError('Фильм не найден');
-      } else if (err.statusCode == 403) {
-        throw new ForbiddenError('У пользователя нет прав на удаление фильма');
+        throw new NotFoundError(errorMessage.notFound);
+      } else if (err.statusCode === 403) {
+        throw new ForbiddenError(errorMessage.forbidden);
       }
     })
     .catch(next);

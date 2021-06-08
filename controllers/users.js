@@ -1,10 +1,11 @@
-const { NODE_ENV, JWT_SECRET } = process.env;
 const User = require('../models/user');
 
 const { handleErr } = require('../utils/utils');
 
 const { BadRequestError } = require('../errors/400-BadRequestError');
 const { NotFoundError } = require('../errors/404-NotFoundError');
+
+const { errorMessage } = require('../utils/constants');
 
 async function getUserInfo(req, res, next) {
   User.findById(req.user._id)
@@ -14,9 +15,9 @@ async function getUserInfo(req, res, next) {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new BadRequestError('Переданы некорректные данные');
+        throw new BadRequestError(errorMessage.badRequest);
       } else if (err.message === 'NotFound') {
-        throw new NotFoundError('Данные не найдены');
+        throw new NotFoundError(errorMessage.notFound);
       }
     })
     .catch(next);

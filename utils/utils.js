@@ -2,17 +2,19 @@ const { BadRequestError } = require('../errors/400-BadRequestError');
 const { NotFoundError } = require('../errors/404-NotFoundError');
 const { InternalServerError } = require('../errors/500-InternalServerError');
 
+const { errorMessage } = require('./constants');
+
 function handleErr(err) {
   if (err.name === 'CastError') {
-    throw new BadRequestError('Переданы некорректные данные');
+    throw new BadRequestError(errorMessage.badRequest);
   } else if (err.message === 'NotFound') {
-    throw new NotFoundError('Ресурс не найден');
+    throw new NotFoundError(errorMessage.notFound);
   } else {
-    throw new InternalServerError('Произошла ошибка на сервере');
+    throw new InternalServerError(errorMessage.internalServerError);
   }
 }
 
-function processErrors(err, req, res, next) {
+function processErrors(err, req, res) {
   res.status(err.statusCode)
     .send({ message: err.message });
 }

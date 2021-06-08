@@ -13,6 +13,8 @@ const { UnauthorizedError } = require('../errors/401-UnauthorizedError');
 const { InternalServerError } = require('../errors/500-InternalServerError');
 const { ConflictError } = require('../errors/409-ConflictError');
 
+const { errorMessage } = require('../utils/constants');
+
 function signUp(req, res, next) {
   bcrypt.hash(req.body.password, 10)
     .then((hash) => User.create({
@@ -26,13 +28,13 @@ function signUp(req, res, next) {
     }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new BadRequestError('Переданы некорректные данные');
+        throw new BadRequestError(errorMessage.badRequest);
       } else if (err.code === 11000) {
-        throw new ConflictError('Пользователь с такими данными уже зарегистрирован');
+        throw new ConflictError(errorMessage.userAlreadyRegistered);
       } else if (err.name === 'NotFound') {
-        throw new NotFoundError('Данные не найдены');
+        throw new NotFoundError(errorMessage.notFound);
       } else if (err.statusCode === 500) {
-        throw new InternalServerError('Ошибка на сервере при получении данных пользователей');
+        throw new InternalServerError(errorMessage.internalServerError);
       }
     })
     .catch(next);
@@ -48,9 +50,9 @@ function signIn(req, res, next) {
     })
     .catch((err) => {
       if (err.statusCode === 500) {
-        throw new InternalServerError('Ошибка на сервере при авторизации пользователя');
+        throw new InternalServerError(errorMessage.internalServerError);
       } else {
-        throw new UnauthorizedError('Неверный логин или пароль');
+        throw new UnauthorizedError(errorMessage.incorrectLoginOrPassword);
       }
     })
     .catch(next);

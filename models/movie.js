@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { default: validator } = require('validator');
 
+const { errorMessage } = require('../utils/constants');
+
 const movieSchema = new mongoose.Schema({
   country: {
     type: String,
@@ -27,7 +29,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (value) => validator.isURL(value, { protocols: ['http', 'https', 'ftp'], require_tld: true, require_protocol: true }),
-      message: 'Неправильный формат ссылки',
+      message: errorMessage.invalidUrl,
     },
   },
   trailer: {
@@ -35,7 +37,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (value) => validator.isURL(value, { protocols: ['http', 'https', 'ftp'], require_tld: true, require_protocol: true }),
-      message: 'Неправильный формат ссылки',
+      message: errorMessage.invalidUrl,
     },
   },
   thumbnail: {
@@ -43,12 +45,16 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (value) => validator.isURL(value, { protocols: ['http', 'https', 'ftp'], require_tld: true, require_protocol: true }),
-      message: 'Неправильный формат ссылки',
+      message: errorMessage.invalidUrl,
     },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
+    required: true,
+  },
+  movieId: {
+    type: Number,
     required: true,
   },
   nameRU: {

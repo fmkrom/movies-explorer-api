@@ -1,13 +1,13 @@
 require('dotenv').config();
 
-const { DATABASE } = process.env;
+const { DATABASE, NODE_ENV } = process.env;
 const { PORT = 3000 } = process.env;
 
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const { celebrate, Joi } = require('celebrate');
+const { celebrate } = require('celebrate');
 const { errors } = require('celebrate');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -21,7 +21,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { processErrors } = require('./utils/utils');
 
-const { mongooseSettings } = require('./utils/constants');
+const { mongooseSettings, DATABASE_DEV } = require('./utils/constants');
 
 const {
   signUpValidation,
@@ -42,7 +42,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect(DATABASE, mongooseSettings);
+mongoose.connect(NODE_ENV === 'production' ? DATABASE : DATABASE_DEV, mongooseSettings);
 
 app.use(requestLogger);
 
