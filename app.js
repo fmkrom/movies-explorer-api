@@ -7,31 +7,22 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const { celebrate } = require('celebrate');
 const { errors } = require('celebrate');
 const cors = require('cors');
 const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
-const usersRoutes = require('./routes/users');
-const moviesRoutes = require('./routes/movies');
-const notFoundRoutes = require('./routes/notFound');
+const routes = require('./routes/index');
 
-const { auth } = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { processErrors } = require('./utils/utils');
+const { errorMessage } = require('./utils/constants');
 
 const { mongooseSettings, DATABASE_DEV } = require('./utils/constants');
 
-const {
-  signUpValidation,
-  signInValidation,
-} = require('./utils/validation');
+const { limiterSettings } = require('./utils/limiterSettings');
 
-const {
-  signUp,
-  signIn,
-} = require('./controllers/auth');
+const limiter = rateLimit(limiterSettings);
 
 const app = express();
 
@@ -52,25 +43,19 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-// Регистрация:
-app.use('/signup',
-  celebrate({ body: signUpValidation }),
-  signUp);
+app.use(limiter);
 
-// Авторизация (логин)
-app.use('/signin',
-  celebrate({ body: signInValidation }),
-  signIn);
-
-app.use('/users', auth, usersRoutes);
-app.use('/movies', auth, moviesRoutes);
-app.use('*', notFoundRoutes);
+app.use(routes);
 
 app.use(errorLogger);
 
 app.use(errors());
 
-app.use(processErrors);
+app.use((err, req, res, next) => {
+  res.status(err.statusCode)
+    .send({ message: err.statusCode ? err.message : errorMessage.internalServerError });
+  next();
+});
 
 app.listen(PORT, () => {
   console.log(`Server launched sucesfully! App listening on port: ${PORT}`);

@@ -8,13 +8,14 @@ const createMovieValidation = Joi.object().keys({
   description: Joi.string().required(),
   image: Joi.string().required(),
   trailer: Joi.string().required(),
+  movieId: Joi.number().required(),
   nameRU: Joi.string().required(),
   nameEN: Joi.string().required(),
   thumbnail: Joi.string().required(),
 });
 
 const deleteMovieValidation = Joi.object().keys({
-  movieId:
+  movieID:
     Joi.string()
       .required()
       .length(24)

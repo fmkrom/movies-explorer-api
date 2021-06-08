@@ -1,13 +1,14 @@
 const router = require('express').Router();
 const { NotFoundError } = require('../errors/404-NotFoundError');
 const { UnauthorizedError } = require('../errors/401-UnauthorizedError');
-const { auth } = require('../middlewares/auth');
 
-router.use('*', auth, (res) => {
+const { errorMessage } = require('../utils/constants');
+
+router.use('*', (res) => {
   if (res.statusCode === 401) {
-    throw new UnauthorizedError('Необходима авторизация пользователя');
+    throw new UnauthorizedError(errorMessage.unauthorized);
   } else {
-    throw new NotFoundError('Данные не найдены');
+    throw new NotFoundError(errorMessage.notFound);
   }
 });
 

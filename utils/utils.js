@@ -13,10 +13,12 @@ function handleErr(err) {
     throw new InternalServerError(errorMessage.internalServerError);
   }
 }
-
-function processErrors(err, req, res) {
+/*
+function processErrors(err, req, res, next) {
   res.status(err.statusCode)
-    .send({ message: err.message });
+    .send({ message: err.statusCode ? err.message : errorMessage.internalServerError });
+  next();
 }
+*/
 
-module.exports = { handleErr, processErrors };
+module.exports = { handleErr };

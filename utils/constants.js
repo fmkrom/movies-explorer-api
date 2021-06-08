@@ -14,10 +14,11 @@ const errorMessage = {
   incorrectLoginOrPassword: 'Неверный логин или пароль',
   forbidden: 'У пользователя нет прав для удаления фильма',
   notFound: 'Данные не найдены',
-  userAlreadyRegistered: 'Пользватель с такими данными уже зарегистрирован',
+  userAlreadyRegistered: 'Пользователь с такими данными уже зарегистрирован',
   internalServerError: 'На сервере произошла ошибка',
   invalidUrl: 'Неправильный формат ссылки',
   invalidEmail: 'Неправильный формат электронной почты',
+  tooManyRequests: 'Слишком много запросов с этого IP. Попробуйте через 1 час',
 };
 
 module.exports = {

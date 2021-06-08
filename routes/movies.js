@@ -18,7 +18,7 @@ router.post('/',
   celebrate({ body: createMovieValidation }),
   createMovie);
 
-router.delete('/:movieId',
+router.delete('/:movieID',
   celebrate({ params: deleteMovieValidation }),
   deleteMovie);
 

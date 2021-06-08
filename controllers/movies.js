@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const Movie = require('../models/movie');
 
 const { BadRequestError } = require('../errors/400-BadRequestError');
@@ -20,7 +19,6 @@ async function getMovies(req, res) {
 
 function createMovie(req, res, next) {
   Movie.create({
-    movieId: mongoose.Types.Number(),
     country: req.body.country,
     director: req.body.director,
     duration: req.body.duration,
@@ -29,6 +27,7 @@ function createMovie(req, res, next) {
     image: req.body.image,
     trailer: req.body.trailer,
     owner: req.user._id,
+    movieId: req.body.movieId,
     nameRU: req.body.nameRU,
     nameEN: req.body.nameEN,
     thumbnail: req.body.thumbnail,
@@ -45,24 +44,27 @@ function createMovie(req, res, next) {
 }
 
 function deleteMovie(req, res, next) {
-  Movie.findById(req.params.movieId)
+  Movie.findById(req.params.movieID)
+    // eslint-disable-next-line consistent-return
     .then((movie) => {
       const movieIsOwn = Boolean(movie.owner.toString() === req.user._id.toString());
       if (!movieIsOwn) {
         throw new ForbiddenError(errorMessage.forbidden);
       } else if (movieIsOwn) {
-        Movie.findByIdAndRemove(movie._id)
+        return movie.remove()
           .then((deletedMovie) => res.send({ deletedMovie }));
       }
     })
     .catch((err) => {
-      if (err.name === 'CastError' || err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
         throw new BadRequestError(errorMessage.badRequest);
       } else if (err.name === 'TypeError') {
         throw new NotFoundError(errorMessage.notFound);
-      } else if (err.statusCode === 403) {
-        throw new ForbiddenError(errorMessage.forbidden);
+      } else if (err.name === 'NotFound') {
+        console.log(err);
+        throw new NotFoundError(errorMessage.notFound);
       }
+      throw err;
     })
     .catch(next);
 }
