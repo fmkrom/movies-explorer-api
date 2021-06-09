@@ -13,7 +13,7 @@ https://api.fmkrom-movies-exp.nomoredomains.icu
 https://fmkrom-movies-explorer.nomoredomains.icu
 
 ## Адрес сервера:
-https://84.201.141.14/
+https://84.252.139.216/
 
 ### Серверные функции, реализованные в проекте:
 
