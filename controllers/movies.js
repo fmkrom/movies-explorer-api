@@ -61,7 +61,6 @@ function deleteMovie(req, res, next) {
       } else if (err.name === 'TypeError') {
         throw new NotFoundError(errorMessage.notFound);
       } else if (err.name === 'NotFound') {
-        console.log(err);
         throw new NotFoundError(errorMessage.notFound);
       }
       throw err;
