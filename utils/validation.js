@@ -1,48 +1,73 @@
-import React, { useCallback } from "./react";
+const { Joi } = require('celebrate');
 
-//хук управления формой
+const createMovieValidation = Joi.object().keys({
+  country: Joi.string().required(),
+  director: Joi.string().required(),
+  duration: Joi.number().required(),
+  year: Joi.string().required(),
+  description: Joi.string().required(),
+  image: Joi.string().required(),
+  trailer: Joi.string().required(),
+  movieId: Joi.number().required(),
+  nameRU: Joi.string().required(),
+  nameEN: Joi.string().required(),
+  thumbnail: Joi.string().required(),
+});
 
-export function useForm() {
-  const [values, setValues] = React.useState({});
+const deleteMovieValidation = Joi.object().keys({
+  movieID:
+    Joi.string()
+      .required()
+      .length(24)
+      .hex(),
+});
 
-  const handleChange = (event) => {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-    setValues({...values, [name]: value});
-  };
+const editUserInfoValidation = Joi.object().keys({
+  email:
+      Joi.string()
+        .required()
+        .min(2)
+        .max(30)
+        .email({ tlds: { allow: false } }),
+  name:
+    Joi.string()
+      .required()
+      .min(2)
+      .max(30),
+});
 
-  return {values, handleChange, setValues};
-}
+const signUpValidation = Joi.object().keys({
+  email:
+    Joi.string()
+      .required()
+      .min(2)
+      .max(30)
+      .email({ tlds: { allow: false } }),
+  password: Joi.string()
+    .required()
+    .min(8),
+  name: Joi.string()
+    .min(2)
+    .max(30),
+});
 
-//хук управления формой и валидации формы
+const signInValidation = Joi.object().keys({
+  email:
+    Joi.string()
+      .required()
+      .min(2)
+      .max(30)
+      .email({ tlds: { allow: false } }),
+  password:
+    Joi.string()
+      .required()
+      .min(8),
+});
 
-export function useFormWithValidation() {
-  const [values, setValues] = React.useState({});
-  const [errors, setErrors] = React.useState({});
-  const [isValid, setIsValid] = React.useState(false);
-
-  const handleChange = (event) => {
-    const target = event.target;
-    const name = target.name;
-    const value = target.value;
-    setValues({...values, [name]: value});
-    setErrors({...errors, [name]: target.validationMessage });
-    setIsValid(target.closest("form").checkValidity());
-  };
-
-  const resetForm = useCallback(
-    (newValues = {}, newErrors = {}, newIsValid = false) => {
-      setValues(newValues);
-      setErrors(newErrors);
-      setIsValid(newIsValid);
-    },
-    [setValues, setErrors, setIsValid]
-  );
-    
-  return { values, handleChange, errors, isValid, resetForm };
-}
-
-/*
-https://ru.reactjs.org/docs/hooks-reference.html#usecallback
-*/
+module.exports = {
+  signUpValidation,
+  signInValidation,
+  createMovieValidation,
+  deleteMovieValidation,
+  editUserInfoValidation,
+};

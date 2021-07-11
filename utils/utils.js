@@ -1,90 +1,24 @@
-import auth from './Api/Auth';
+const { BadRequestError } = require('../errors/400-BadRequestError');
+const { NotFoundError } = require('../errors/404-NotFoundError');
+const { InternalServerError } = require('../errors/500-InternalServerError');
 
-function register(name, email, password){
-    auth.register(name, email, password)
-    .then((res) =>{
-        console.log(`Register sucesfull: ${res}`);
-        console.log(res);
-    })
-    .catch((err)=> console.log(err));
+const { errorMessage } = require('./constants');
+
+function handleErr(err) {
+  if (err.name === 'CastError') {
+    throw new BadRequestError(errorMessage.badRequest);
+  } else if (err.message === 'NotFound') {
+    throw new NotFoundError(errorMessage.notFound);
+  } else {
+    throw new InternalServerError(errorMessage.internalServerError);
+  }
 }
-
-function login(email, password){
-    auth.login(email, password)
-    .then((res) =>{
-        console.log(`Login sucesfull: ${res}`);
-    })
-    .catch((err)=> console.log(err));
+/*
+function processErrors(err, req, res, next) {
+  res.status(err.statusCode)
+    .send({ message: err.statusCode ? err.message : errorMessage.internalServerError });
+  next();
 }
+*/
 
-
-function editProfile(name, email){
-    console.log('Edited User name: ', name);
-    console.log('Edited User email: ', email);
-}
-
-function logout(){
-    console.log('Logout successful!')
-}
-
-function closePopup(popupHookName){
-    popupHookName(false)
-}
-
-function regulateArrayLength(array, currentLength){
-    return array.length = currentLength;
-}
-
-function increaseArrayLength(array){
-    let currentLength =  array.length + 3;
-    console.log(currentLength);
-    return currentLength;
-}
-
-function validateEmailInput(input){
-    const emailInputIsEmpty = Boolean(input.isEmpty && input.isDirty);
-    const emailIncorrect = Boolean(input.emailError && input.isDirty);
-    const emailTooShort = Boolean(input.isDirty && input.minLength);
-
-    const emailIsInValid = Boolean(emailTooShort || emailInputIsEmpty || emailIncorrect);
-    return emailIsInValid;
-}
-
-function validatePasswordInput(input){
-    const passwordInputIsEmpty = Boolean(input.isEmpty && input.isDirty);
-    const passwordTooShort = Boolean(input.isDirty && input.minLength);
-    
-    const passwordIsInvalid = Boolean(passwordInputIsEmpty || passwordTooShort);
-    return passwordIsInvalid;
-}
-
-function validateNameInput(input){
-    const nameInputIsInvalid = (input.nameError && input.isDirty);
-    const nameInputIsEmpty = Boolean(input.isEmpty && input.isDirty);
-    const nameTooShort = Boolean(input.isDirty && input.minLength);
-    
-    const nameIsInvalid = Boolean(nameInputIsEmpty || nameTooShort || nameInputIsInvalid);
-    return nameIsInvalid;
-}
-
-function filterMoviesByOwner(user, movies){
-    const moviesFilteredByOwner = movies.filter((movie)=> movie.owner === user.id);
-    return moviesFilteredByOwner;
-}
-
-const functions = {
-    login, 
-    register,
-    editProfile,
-    logout,
-    closePopup,
-    regulateArrayLength,
-    increaseArrayLength,
-    
-    validateEmailInput,
-    validatePasswordInput,
-    validateNameInput,
-    filterMoviesByOwner
-}
-
-export default functions;
+module.exports = { handleErr };
