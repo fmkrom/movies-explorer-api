@@ -44,7 +44,7 @@ function signIn(req, res, next) {
       const token = jwt.sign({ _id: user._id },
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
         { expiresIn: '7d' });
-      res.send(token);
+      res.send({ jwt: token });
     })
     .catch((err) => {
       if (err.statusCode === 500) {
