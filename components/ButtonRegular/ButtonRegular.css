@@ -1,0 +1,53 @@
+.button-regular{
+    background-color: inherit;
+    margin-top:16px;
+    margin-bottom: 16px;
+    margin-left: 0;
+    margin-right: 0;
+    border:0;
+    color:auto;
+    
+    width: max-content;
+    height: max-content;
+
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 17px;
+    letter-spacing: 0em;
+    text-align: center;
+
+    cursor: pointer;
+}
+
+.button-regular_shown{
+    display: block;
+}
+
+.button-regular_hidden{
+    display: none
+}
+
+@media screen and (max-width:764px){
+    .button-regular{
+        margin-bottom: 16px;
+        margin-top:0;
+        width:max-content;
+        height: max-content;
+        font-size: 12px;
+        line-height: 15px;
+    }
+}
+
+.button-regular_black{
+    color: black;
+}
+
+.button-regular_red{
+    color: #FF004D;
+}
+
+.button-regular:hover{
+    opacity:0.8;
+    cursor:pointer;
+}

@@ -1,0 +1,18 @@
+.block-headline{
+    width: 100%;
+    background-color: inherit;
+    border-bottom: 1px solid black;
+}
+
+.block-headline__text{
+    margin-top: 0;
+    margin-bottom: 23px;
+    text-align: left;
+
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 27px;
+    letter-spacing: -0.04em;
+    text-align: left;
+}

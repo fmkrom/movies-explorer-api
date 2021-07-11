@@ -1,0 +1,31 @@
+.button-long{
+    margin: 0 auto;
+    width:100%;
+    height:36px;
+    background-color: #F9F9F9;
+    color:black;
+    margin-top: 50px;
+    margin-bottom: 80px;
+    border:0;
+
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 17px;
+    letter-spacing: 0em;
+    text-align: center;
+
+    cursor: pointer;
+}
+
+@media screen and (max-width:764px){
+    .button-long{
+        font-size: 12px;
+        line-height: 15px;
+    }
+}
+
+.button-long:hover{
+    opacity:0.8;
+    cursor:pointer;
+}

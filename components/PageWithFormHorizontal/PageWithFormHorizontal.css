@@ -1,0 +1,50 @@
+.form-horizontal{
+    margin-top: 74px;
+    margin-bottom: 70px;
+    width:410px;
+    height: max-content;
+    background-color: inherit;
+    padding: 0;
+    margin:0;
+}
+
+@media screen and (max-width:595px){
+    .form-horizontal{
+        width:71%;
+        margin-top: 56px;
+        margin-bottom: 30px;
+    }
+}
+
+@media screen and (max-width:495px){
+    .form-horizontal{
+        width:81%;
+        margin-top: 56px;
+        margin-bottom: 30px;
+    }
+}
+
+@media screen and (max-width:320px){
+    .form-horizontal{
+        width:260px;
+        margin-top: 56px;
+        margin-bottom: 36px;
+    }
+}
+
+.account__bottom-buttons{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/*
+@media screen and (max-width:320px){
+    .form-horizontal{
+        width:260px;
+        margin-top: 56px;
+        margin-bottom: 30px;
+    }
+}
+*/

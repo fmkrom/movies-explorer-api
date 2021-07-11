@@ -1,0 +1,58 @@
+.bar-chart-fraction{
+    display: flex;
+    flex-direction: column;
+    height: 68px;
+}
+
+.bar-chart-fraction_small{
+    width:20%;}
+
+.bar-chart-fraction_large{
+    width:80%;
+}
+
+.bar-chart-fraction__bar{
+    height: 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.bar-chart-fraction__bar_highlighted{
+    background-color: #3456F3;
+}
+
+.bar-chart-fraction__bar_plain{
+    background-color: #F2F2F2;
+}
+
+.bar-chart__text{
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 17px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+
+@media screen and (max-width: 764px) {
+    .bar-chart__text{
+        font-size: 11px;
+        line-height: 13px;
+    }
+}
+
+.bar-chart__text_white{
+    color:white;
+}
+
+.bar-chart__text_lightgray{
+    color:#A0A0A0;
+}
+
+.bar-chart__text_black{
+    color:black;
+}
+
+
