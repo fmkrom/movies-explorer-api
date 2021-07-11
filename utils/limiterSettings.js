@@ -2,7 +2,7 @@ const { errorMessage } = require('./constants');
 
 const limiterSettings = {
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
+  max: 1000000,
   message: errorMessage.tooManyRequests,
 };
 

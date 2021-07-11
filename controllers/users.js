@@ -11,7 +11,7 @@ async function getUserInfo(req, res, next) {
   User.findById(req.user._id)
     .orFail(new Error('NotFound'))
     .then((user) => {
-      res.send({ email: user.email, name: user.name });
+      res.send({ id: user._id, email: user.email, name: user.name });
     })
     .catch((err) => {
       if (err.name === 'CastError') {

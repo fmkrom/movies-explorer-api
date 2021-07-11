@@ -32,7 +32,7 @@ function createMovie(req, res, next) {
     nameEN: req.body.nameEN,
     thumbnail: req.body.thumbnail,
   })
-    .then((movie) => { res.send(movie); })
+    .then((movie) => { res.send({ savedMovie: movie }); })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new BadRequestError(errorMessage.badRequest);
