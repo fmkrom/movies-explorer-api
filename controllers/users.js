@@ -7,6 +7,16 @@ const { NotFoundError } = require('../errors/404-NotFoundError');
 
 const { errorMessage } = require('../utils/constants');
 
+function getAllUsers(req, res, next) {
+  User.find({})
+    .then((users) => res.send({ data: users }))
+    .catch((err) => {
+      res.send(err);
+      throw new NotFoundError('Ошибка на сервере при получении данных пользователей');
+    })
+    .catch(next);
+}
+
 async function getUserInfo(req, res, next) {
   User.findById(req.user._id)
     .orFail(new Error('NotFound'))
@@ -47,4 +57,5 @@ function updateUserInfo(req, res, next) {
 module.exports = {
   getUserInfo,
   updateUserInfo,
+  getAllUsers,
 };

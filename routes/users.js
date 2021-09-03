@@ -6,9 +6,12 @@ const {
 } = require('../utils/validation');
 
 const {
+  getAllUsers,
   getUserInfo,
   updateUserInfo,
 } = require('../controllers/users');
+
+router.get('/', getAllUsers);
 
 router.get('/me', getUserInfo);
 
