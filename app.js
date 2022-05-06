@@ -15,11 +15,8 @@ const rateLimit = require('express-rate-limit');
 const routes = require('./routes/index');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-
 const { errorMessage } = require('./utils/constants');
-
 const { mongooseSettings, DATABASE_DEV } = require('./utils/constants');
-
 const { limiterSettings } = require('./utils/limiterSettings');
 
 const limiter = rateLimit(limiterSettings);

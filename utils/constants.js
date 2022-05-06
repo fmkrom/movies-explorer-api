@@ -1,4 +1,4 @@
-const DATABASE_DEV = 'mongodb://localhost:27017/filmsdb';
+const DATABASE_DEV = 'mongodb://localhost:27017/noterdb';
 
 const mongooseSettings = {
   useUnifiedTopology: true,

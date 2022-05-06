@@ -3,6 +3,7 @@ const { celebrate } = require('celebrate');
 
 const usersRoutes = require('./users');
 const moviesRoutes = require('./movies');
+const tasksRoutes = require('./tasks');
 const notFoundRoutes = require('./notFound');
 
 const {
@@ -29,6 +30,7 @@ router.use('/signin',
 
 router.use('/users', auth, usersRoutes);
 router.use('/movies', auth, moviesRoutes);
+router.use('/tasks', auth, tasksRoutes);
 router.use('*', auth, notFoundRoutes);
 
 module.exports = router;
